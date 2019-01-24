@@ -12,8 +12,47 @@ client.on('ready', () => {
   })
   const botChannel = client.channels.get('537707944083456029');
   botChannel.send('PotatoBot, reporting for duty!');
-
 });
+
+const roll = (args, message) => {
+  const dieRoll = args[0].split('+');
+  const die = dieRoll[0].split('d')[1];
+  let modifier = dieRoll[1];
+
+  if (modifier === undefined) modifier = 0;
+
+  const baseRoll = Number(Math.floor(Math.random() * die) + 1);
+  const rollWithModifiers = baseRoll + Number(modifier);
+
+  message.channel.send(baseRoll + ' + ' +  modifier + ' = ' + rollWithModifiers)
+
+  // if (die === '1d20') return Math.floor(Math.random() * 20) + 1;
+}
+
+const processCommand = (message) => {
+  const fullCommand = message.content.substr(1);
+  const splitCommand = fullCommand.split(' ');
+  const primaryCommand = splitCommand[0].toLowerCase();
+  const args = splitCommand.slice(1);
+
+  console.log('Command Received ==> ', primaryCommand);
+  console.log('Arguments ==> ', args);
+
+  if (primaryCommand === 'r') roll(args, message);
+  else message.channel.send('I dont understand that command.')
+}
+
+
+client.on('message', (receivedMessage) => {
+    // Prevent bot from responding to its own messages
+    if (receivedMessage.author === client.user) {
+        return;
+    }
+
+    if (receivedMessage.content.startsWith('!')) {
+      processCommand(receivedMessage);
+    }
+})
 
 const botSecretToken =
   'NTM3NzA4MjkxNzQ1MTIwMjU3.DypMCA.lMzjkvCzMHAteDrCzjN4xo5Q_pg';
