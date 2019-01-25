@@ -4,12 +4,12 @@ const client = new Discord.Client();
 client.on('ready', () => {
   console.log('Connected as ' + client.user.tag);
   console.log('Servers:');
-  client.guilds.forEach((guild) => {
-      console.log(' - ' + guild.name)
-      guild.channels.forEach((channel) => {
-          console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`)
-      })
-  })
+  client.guilds.forEach(guild => {
+    console.log(' - ' + guild.name);
+    guild.channels.forEach(channel => {
+      console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`);
+    });
+  });
   const botChannel = client.channels.get('537707944083456029');
   botChannel.send('PotatoBot, reporting for duty!');
 });
@@ -24,12 +24,12 @@ const roll = (args, message) => {
   const baseRoll = Number(Math.floor(Math.random() * die) + 1);
   const rollWithModifiers = baseRoll + Number(modifier);
 
-  message.channel.send(baseRoll + ' + ' +  modifier + ' = ' + rollWithModifiers)
+  message.channel.send(baseRoll + ' + ' + modifier + ' = ' + rollWithModifiers);
 
   // if (die === '1d20') return Math.floor(Math.random() * 20) + 1;
-}
+};
 
-const processCommand = (message) => {
+const processCommand = message => {
   const fullCommand = message.content.substr(1);
   const splitCommand = fullCommand.split(' ');
   const primaryCommand = splitCommand[0].toLowerCase();
@@ -39,20 +39,19 @@ const processCommand = (message) => {
   console.log('Arguments ==> ', args);
 
   if (primaryCommand === 'r') roll(args, message);
-  else message.channel.send('I dont understand that command.')
-}
+  else message.channel.send('I dont understand that command.');
+};
 
+client.on('message', receivedMessage => {
+  // Prevent bot from responding to its own messages
+  if (receivedMessage.author === client.user) {
+    return;
+  }
 
-client.on('message', (receivedMessage) => {
-    // Prevent bot from responding to its own messages
-    if (receivedMessage.author === client.user) {
-        return;
-    }
-
-    if (receivedMessage.content.startsWith('!')) {
-      processCommand(receivedMessage);
-    }
-})
+  if (receivedMessage.content.startsWith('!')) {
+    processCommand(receivedMessage);
+  }
+});
 
 const botSecretToken =
   'NTM3NzA4MjkxNzQ1MTIwMjU3.DypMCA.lMzjkvCzMHAteDrCzjN4xo5Q_pg';
