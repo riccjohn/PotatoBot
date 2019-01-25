@@ -15,7 +15,7 @@ client.on('ready', () => {
   botChannel.send('PotatoBot, reporting for duty!');
 });
 
-const roll = (args, message) => {
+const roll = (args, receivedMessage) => {
   const dieRoll = args[0].split('+');
   const die = dieRoll[0].split('d')[1];
   let modifier = dieRoll[1];
@@ -25,7 +25,18 @@ const roll = (args, message) => {
   const baseRoll = Number(Math.floor(Math.random() * die) + 1);
   const rollWithModifiers = baseRoll + Number(modifier);
 
-  message.channel.send(baseRoll + ' + ' + modifier + ' = ' + rollWithModifiers);
+  //TODO: rewrite so that I can use tilde
+  // '`' + args '`' + ' => ' +
+
+  if (modifier !== 0) {
+    receivedMessage.channel.send(
+      `${receivedMessage.author.toString()}: ${args} => ${baseRoll} + ${modifier} = ${rollWithModifiers}`
+    );
+  } else {
+    receivedMessage.channel.send(
+      `${receivedMessage.author.toString()}: ${args} => ${baseRoll}`
+    );
+  }
 };
 
 const processCommand = message => {
