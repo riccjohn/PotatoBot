@@ -30,11 +30,11 @@ const roll = (args, receivedMessage) => {
 
   if (modifier !== 0) {
     receivedMessage.channel.send(
-      `${receivedMessage.author.toString()}: ${args} => ${baseRoll} + ${modifier} = ${rollWithModifiers}`
+      receivedMessage.author.toString()+ ': ' + '`' + args + '`' + ' => ' + baseRoll + ' + ' + modifier + ' = ' + rollWithModifiers
     );
   } else {
     receivedMessage.channel.send(
-      `${receivedMessage.author.toString()}: ${args} => ${baseRoll}`
+      receivedMessage.author.toString() + ': ' + '`' + args + '`' + ' => ' + baseRoll
     );
   }
 };
