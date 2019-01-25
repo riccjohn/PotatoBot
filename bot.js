@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 client.on('ready', () => {
+  client.user.setActivity('with JavaScript');
   console.log('Connected as ' + client.user.tag);
   console.log('Servers:');
   client.guilds.forEach(guild => {
@@ -25,8 +26,6 @@ const roll = (args, message) => {
   const rollWithModifiers = baseRoll + Number(modifier);
 
   message.channel.send(baseRoll + ' + ' + modifier + ' = ' + rollWithModifiers);
-
-  // if (die === '1d20') return Math.floor(Math.random() * 20) + 1;
 };
 
 const processCommand = message => {
