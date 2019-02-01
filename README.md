@@ -1,4 +1,6 @@
-A simple Discord bot I created for testing.
+# PotatoBot
+
+A discord bot created to help play tabletop roleplaying games.
 
 ### roll
 
