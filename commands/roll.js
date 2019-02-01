@@ -40,4 +40,4 @@ const roll = (args, receivedMessage) => {
 
 module.exports = {
   roll
-}
+};
