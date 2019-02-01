@@ -6,8 +6,8 @@ const processCommand = message => {
   const primaryCommand = splitCommand[0].toLowerCase();
   const args = splitCommand.slice(1);
 
-  // console.log('Command Received ==> ', primaryCommand);
-  // console.log('Arguments ==> ', args);
+  console.log('Command Received ==> ', primaryCommand);
+  console.log('Arguments ==> ', args);
 
   if (primaryCommand === 'r') roll(args, message);
   else message.channel.send('I dont understand that command.');
@@ -15,4 +15,4 @@ const processCommand = message => {
 
 module.exports = {
   processCommand
-}
+};
