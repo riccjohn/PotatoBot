@@ -2,7 +2,9 @@ const { roll } = require('./roll');
 
 const processCommand = message => {
   const fullCommand = message.content.substr(1);
-  const primaryCommand = fullCommand.slice(0, fullCommand.indexOf(' ')).toLowerCase();
+  const primaryCommand = fullCommand
+    .slice(0, fullCommand.indexOf(' '))
+    .toLowerCase();
   const args = fullCommand.slice(fullCommand.indexOf(' ')).trim();
 
   if (primaryCommand === 'r') roll(args, message);
@@ -10,5 +12,5 @@ const processCommand = message => {
 };
 
 module.exports = {
-  processCommand
+  processCommand,
 };
