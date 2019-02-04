@@ -1,41 +1,39 @@
+const singleRoll = (dieSize) => {
+  return Number(Math.floor(Math.random() * dieSize) + 1);
+};
+
+const parseRollArgs = (args, receivedMessage) => {
+  const comment = args.includes('#') ? args.split('#')[1] : null;
+  const argsNoComment = args.includes('#') ? args.slice(0, args.indexOf('#')) : args;
+  let argsArray;
+
+  if (argsNoComment.includes(' + ')) argsArray = argsNoComment.split(' + ');
+  else if (argsNoComment.includes(' +')) argsArray = argsNoComment.split(' +');
+  else if (argsNoComment.includes('+ ')) argsArray = argsNoComment.split('+ ');
+  else if (argsNoComment.includes('+')) argsArray = argsNoComment.split('+');
+  else argsArray = [argsNoComment];
+
+  argsArray = argsArray.map(arg => {
+    if (arg.includes('d')) {
+      return arg.split('d');
+    } else return arg;
+  });
+
+  const author = receivedMessage.author.toString() || 'test';
+
+  return {
+    comment,
+    argsArray,
+    author,
+  };
+};
+
 const roll = (args, receivedMessage) => {
-  const dieRoll = args[0].split('+');
-  const die = dieRoll[0].split('d')[1];
-  const numOfDie = dieRoll[0].split('d')[0];
-  const modifier = Number(dieRoll[1]);
-  const baseRolls = [];
-  const author = receivedMessage.author.toString();
-
-  const singleRoll = (dieSize) => {
-    return Number(Math.floor(Math.random() * dieSize) + 1);
-  };
-
-  for (let i = 0; i < numOfDie; i++) {
-    baseRolls.push(singleRoll(die));
-  }
-
-  let baseResponse = author + ': ' + '`' + args[0] + '`' + ' => (';
-
-  const rollSum = baseRolls.reduce((acc, curr) => {
-    return acc += curr;
-  }, 0);
-
-  const createResponse = () => {
-    let response = baseResponse;
-
-    for (let i = 0; i < baseRolls.length; i++) {
-      response += baseRolls[i];
-      if (i < baseRolls.length - 1) response += '+';
-    }
-    response += ')';
-
-    if (modifier) response += ` + ${modifier} = **${rollSum + modifier}**`;
-    else response += ` = **${rollSum }**`;
-
-    return response;
-  };
-
-  receivedMessage.channel.send(createResponse());
+  const parsedArgs = parseRollArgs(args, receivedMessage);
+  const { comment, argsArray, author } = parsedArgs;
+  console.log('Comment:', comment);
+  console.log('Args:', argsArray);
+  console.log('Author:', author);
 };
 
 module.exports = {
