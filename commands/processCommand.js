@@ -7,7 +7,7 @@ const processCommand = message => {
     .toLowerCase();
   const args = fullCommand.slice(fullCommand.indexOf(' ')).trim();
 
-  if (primaryCommand === 'r') roll(args, message);
+  if (primaryCommand === 'r' || primaryCommand === 'roll') roll(args, message);
   else message.channel.send('I dont understand that command.');
 };
 
