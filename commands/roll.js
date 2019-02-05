@@ -3,10 +3,32 @@ const singleRoll = function(dieSize) {
 };
 
 const parseRollArgs = function(args, receivedMessage) {
-  const comment = args.includes('#') ? args.split('#')[1] : null;
-  const argsNoComment = args.includes('#')
-    ? args.slice(0, args.indexOf('#'))
-    : args;
+  const hasComment = args.includes('#');
+  const hasFlag = args.includes('-');
+  const comment = hasComment ? args.slice(args.indexOf('#')) : null;
+
+  const flags = hasFlag
+    ? hasComment
+      ? args.slice(args.indexOf('-') + 1, args.indexOf('#')).trim()
+      : args.slice(args.indexOf('-') + 1).trim()
+    : null;
+
+  let firstFlag;
+
+  if (hasFlag && hasComment) {
+    firstFlag =
+      args.indexOf('#') < args.indexOf('-')
+        ? args.indexOf('#')
+        : args.indexOf('-');
+  } else if (hasFlag) {
+    firstFlag = args.indexOf('-');
+  } else if (hasComment) {
+    firstFlag = args.indexOf('#');
+  } else {
+    firstFlag = args.length;
+  }
+
+  const argsNoComment = args.slice(0, firstFlag).trim();
 
   let argsArray;
 
@@ -24,6 +46,12 @@ const parseRollArgs = function(args, receivedMessage) {
       });
     } else return arg;
   });
+
+  console.log('Input args =>', args);
+  console.log('Flags =>', flags);
+  console.log('ArgsNoComment =>', argsNoComment);
+  console.log('ArgsArray =>', argsArray);
+  console.log('Comment =>', comment);
 
   const author = receivedMessage.author.toString() || '';
 
