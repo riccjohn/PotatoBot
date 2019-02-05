@@ -56,16 +56,17 @@ const parseRollArgs = function(args, receivedMessage) {
   const author = receivedMessage.author.toString() || '';
 
   return {
-    comment,
     argsArray,
-    author,
     argsNoComment,
+    flags,
+    comment,
+    author,
   };
 };
 
 const roll = function(args, receivedMessage) {
   const parsedArgs = parseRollArgs(args, receivedMessage);
-  const { comment, argsArray, author, argsNoComment } = parsedArgs;
+  const { argsArray, argsNoComment, flags, comment, author } = parsedArgs;
   const origCommand = argsNoComment;
 
   let rolls = [];
