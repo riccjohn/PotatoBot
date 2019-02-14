@@ -1,6 +1,6 @@
 {
   "name": "potatobot",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A test bot for Discord",
   "main": "bot.js",
   "scripts": {
