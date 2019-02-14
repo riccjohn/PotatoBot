@@ -4,9 +4,26 @@ A discord bot created to help play tabletop roleplaying games.
 
 ### Roll
 
-Usage:
+Basic Command
 
-`!roll or !r`
-`!r 1d20` will 'roll' a 20-sided die
-`!r 1d20 + 2` will roll a 20-sided die and add 2
-`!r 3d6 #Wisdom` will roll 3 6-sided die and add a comment for 'Wisdom'
+```
+!roll or !r
+```
+
+'Roll' a 20-sided die
+
+```
+!r 1d20
+```
+
+Roll a 20-sided die and add 2
+
+```
+!r 1d20 + 2
+```
+
+Roll 3 6-sided die and add a comment for 'Wisdom'
+
+```
+!r 3d6 #Wisdom
+```
