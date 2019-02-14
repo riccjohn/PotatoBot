@@ -2,6 +2,8 @@
 
 A discord bot created to help play tabletop roleplaying games.
 
+![](https://img.shields.io/github/release-pre/riccjohn/PotatoBot.svg?style=flat)
+
 ### Roll
 
 Basic Command
