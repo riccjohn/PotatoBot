@@ -1,3 +1,5 @@
+const { logger } = require('../utils/logger');
+
 const singleRoll = function(dieSize) {
   return Number(Math.floor(Math.random() * dieSize) + 1);
 };
@@ -47,11 +49,18 @@ const parseRollArgs = function(args, receivedMessage) {
     } else return arg;
   });
 
-  console.log('Input args =>', args);
-  console.log('Flags =>', flags);
-  console.log('ArgsNoComment =>', argsNoComment);
-  console.log('ArgsArray =>', argsArray);
-  console.log('Comment =>', comment);
+  // console.log('Input args =>', args);
+  // console.log('Flags =>', flags);
+  // console.log('ArgsNoComment =>', argsNoComment);
+  // console.log('ArgsArray =>', argsArray);
+  // console.log('Comment =>', comment);
+
+  logger.info(
+    'Input Args => %s Flags => %s Comment=> %s',
+    args,
+    flags,
+    comment
+  );
 
   const author = receivedMessage.author.toString() || '';
 
