@@ -4,12 +4,20 @@ A discord bot created to help play tabletop roleplaying games.
 
 ![](https://img.shields.io/github/release-pre/riccjohn/PotatoBot.svg?style=flat)
 
+![](https://img.shields.io/github/last-commit/riccjohn/potatobot.svg?style=flat)
+
 ### Roll
 
 Basic Command
 
 ```
 !roll or !r
+```
+
+Format
+
+```
+!r <number of dice>d<die size> + <modifier> #<comment>
 ```
 
 'Roll' a 20-sided die
