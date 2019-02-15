@@ -49,12 +49,6 @@ const parseRollArgs = function(args, receivedMessage) {
     } else return arg;
   });
 
-  // console.log('Input args =>', args);
-  // console.log('Flags =>', flags);
-  // console.log('ArgsNoComment =>', argsNoComment);
-  // console.log('ArgsArray =>', argsArray);
-  // console.log('Comment =>', comment);
-
   logger.info(
     'Input Args => %s Flags => %s Comment=> %s',
     args,
@@ -91,6 +85,18 @@ const roll = function(args, receivedMessage) {
         rolls.push(singleRoll(dieSize));
       }
     } else modifier = Number(argsArray[i]);
+  }
+
+  switch (flags) {
+    case 'adv':
+      rolls = [Math.max(...rolls)];
+      console.log('Rolling with advantage');
+      break;
+    case 'dis':
+      console.log('Rolling with disadvantage');
+      break;
+    default:
+      console.log('test');
   }
 
   const total =
