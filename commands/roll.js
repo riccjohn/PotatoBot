@@ -98,9 +98,15 @@ const roll = function(args, receivedMessage) {
       return acc + curr;
     }, 0) + modifier;
 
-  receivedMessage.channel.send(
-    createResponse(origCommand, rolls, modifier, total, author, comment)
-  );
+  console.log('TOTAL ==>', total);
+  if (isNaN(total)) {
+    receivedMessage.channel.send('Error: total was not a number');
+    logger.error('Total was NaN. Input was %s', args);
+  } else {
+    receivedMessage.channel.send(
+      createResponse(origCommand, rolls, modifier, total, author, comment)
+    );
+  }
 };
 
 const createResponse = function(input, rolls, mod, sum, author, comment) {
