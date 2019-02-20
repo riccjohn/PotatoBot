@@ -31,6 +31,9 @@ client.on('message', receivedMessage => {
   }
 });
 
-client.on('error', logger.error);
+client.on('error', error => {
+  console.log('CLIENT ERROR ===>');
+  logger.error(error);
+});
 
 client.login(token);
