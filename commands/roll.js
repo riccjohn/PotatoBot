@@ -34,11 +34,12 @@ const parseRollArgs = function(args, receivedMessage) {
 
   let argsArray;
 
-  if (argsNoComment.includes(' + ')) argsArray = argsNoComment.split(' + ');
-  else if (argsNoComment.includes(' +')) argsArray = argsNoComment.split(' +');
-  else if (argsNoComment.includes('+ ')) argsArray = argsNoComment.split('+ ');
-  else if (argsNoComment.includes('+')) argsArray = argsNoComment.split('+');
-  else argsArray = [argsNoComment];
+  const modifierSplits = [' + ', ' +', '+ ', '+'];
+
+  modifierSplits.forEach(el => {
+    if (argsNoComment.includes(el)) argsArray = argsNoComment.split(el);
+    else argsArray = [argsNoComment];
+  });
 
   argsArray = argsArray.map(arg => {
     if (arg.includes('d')) {
@@ -88,15 +89,16 @@ const roll = function(args, receivedMessage) {
   }
 
   switch (flags) {
-    case 'adv':
+    case 'adv' || 'advantage' || 'a':
       rolls = [Math.max(...rolls)];
       console.log('Rolling with advantage');
       break;
-    case 'dis':
+    case 'dis' || 'disadvantage' || 'd':
+      rolls = [Math.min(...rolls)];
       console.log('Rolling with disadvantage');
       break;
     default:
-      console.log('test');
+      break;
   }
 
   const total =
@@ -104,18 +106,25 @@ const roll = function(args, receivedMessage) {
       return acc + curr;
     }, 0) + modifier;
 
-  console.log('TOTAL ==>', total);
   if (isNaN(total)) {
-    receivedMessage.channel.send('Error: total was not a number');
-    logger.error('Total was NaN. Input was %s', args);
+    try {
+      receivedMessage.channel.send('Error: total was not a number');
+      logger.error('Total was NaN. Input was %s', args);
+    } catch (error) {
+      logger.error(error);
+    }
   } else {
-    receivedMessage.channel.send(
-      createResponse(origCommand, rolls, modifier, total, author, comment)
-    );
+    try {
+      receivedMessage.channel.send(
+        createRollResponse(origCommand, rolls, modifier, total, author, comment)
+      );
+    } catch (error) {
+      logger.error(error);
+    }
   }
 };
 
-const createResponse = function(input, rolls, mod, sum, author, comment) {
+const createRollResponse = function(input, rolls, mod, sum, author, comment) {
   let response = author + ': ' + '`' + input + '`';
   if (comment) response += ' ' + comment + ' => (';
   else response += ' => (';
