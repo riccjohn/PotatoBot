@@ -7,8 +7,16 @@ const processCommand = message => {
     .toLowerCase();
   const args = fullCommand.slice(fullCommand.indexOf(' ')).trim();
 
-  if (primaryCommand === 'r' || primaryCommand === 'roll') roll(args, message);
-  else message.channel.send('I dont understand that command.');
+  switch(primaryCommand) {
+    case 'r':
+      roll(args, message);
+      break;
+    case 'roll':
+      roll(args, message);
+      break;
+    default:
+      message.channel.send('I dont understand that command.');
+  }
 };
 
 module.exports = {

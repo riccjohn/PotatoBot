@@ -30,15 +30,15 @@ const parseRollArgs = function(args, receivedMessage) {
     firstFlag = args.length;
   }
 
-  const argsNoComment = args.slice(0, firstFlag).trim();
+  const input = args.slice(0, firstFlag).trim();
 
   let argsArray;
 
   const modifierSplits = [' + ', ' +', '+ ', '+'];
 
   modifierSplits.forEach(el => {
-    if (argsNoComment.includes(el)) argsArray = argsNoComment.split(el);
-    else argsArray = [argsNoComment];
+    if (input.includes(el)) argsArray = input.split(el);
+    else argsArray = [input];
   });
 
   argsArray = argsArray.map(arg => {
@@ -59,22 +59,25 @@ const parseRollArgs = function(args, receivedMessage) {
 
   const author = receivedMessage.author.toString() || '';
 
-  return {
+  const parsedArgs = {
     argsArray,
-    argsNoComment,
+    input,
     flags,
     comment,
     author,
   };
+
+  console.log('Parsed Arguments ==>', parsedArgs);
+
+  return parsedArgs;
 };
 
 const roll = function(args, receivedMessage) {
   const parsedArgs = parseRollArgs(args, receivedMessage);
-  const { argsArray, argsNoComment, flags, comment, author } = parsedArgs;
-  const origCommand = argsNoComment;
+  const { argsArray, input, flags, comment, author } = parsedArgs;
 
   let rolls = [];
-  let modifier = 0;
+  let mod = 0;
 
   for (let i = 0; i < argsArray.length; i++) {
     let numOfDice, dieSize;
@@ -85,7 +88,7 @@ const roll = function(args, receivedMessage) {
       for (let j = 0; j < numOfDice; j++) {
         rolls.push(singleRoll(dieSize));
       }
-    } else modifier = Number(argsArray[i]);
+    } else mod = Number(argsArray[i]);
   }
 
   switch (flags) {
@@ -101,22 +104,31 @@ const roll = function(args, receivedMessage) {
       break;
   }
 
-  const total =
+  const sum =
     rolls.reduce((acc, curr) => {
       return acc + curr;
-    }, 0) + modifier;
+    }, 0) + mod;
 
-  if (isNaN(total)) {
+  if (isNaN(sum)) {
     try {
-      receivedMessage.channel.send('Error: total was not a number');
-      logger.error('Total was NaN. Input was %s', args);
+      receivedMessage.channel.send('Error: sum was not a number');
+      logger.error('sum was NaN. Input was %s', args);
     } catch (error) {
       logger.error(error);
     }
   } else {
     try {
+      const rollData = {
+        input,
+        rolls,
+        mod,
+        sum,
+        author,
+        comment,
+      };
+
       receivedMessage.channel.send(
-        createRollResponse(origCommand, rolls, modifier, total, author, comment)
+        createRollResponse(rollData)
       );
     } catch (error) {
       logger.error(error);
@@ -124,7 +136,8 @@ const roll = function(args, receivedMessage) {
   }
 };
 
-const createRollResponse = function(input, rolls, mod, sum, author, comment) {
+const createRollResponse = function(data) {
+  const { input, rolls, mod, sum, author, comment } = data;
   let response = author + ': ' + '`' + input + '`';
   if (comment) response += ' ' + comment + ' => (';
   else response += ' => (';
