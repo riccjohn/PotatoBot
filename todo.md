@@ -9,9 +9,12 @@
 - [x] `!r 1d20 + 2 #Perception`
 - [x] `!r 2d20 + 2 -advantage` / -a / -adv
 - [x] `!r 2d20 + 2 -disadvantage` / -d / -dis
-- [ ] `!r 3d6 -kh2 #Con`
-- [ ] `!r 3d6 -dl1`
+- [ ] `!r 3d6 -kh2 #Con` => Keep highest 2
+- [ ] `!r 3d6 -dl1` => drop lowest 1
 - [x] `!r 1d8 + 4d6`
+- [ ] Make roll result more prominent!
+- [ ] Move comment to front of response
+- [ ] Add 'crit!' to response when appropriate
 
 #### Advantage / disadvantage
 
