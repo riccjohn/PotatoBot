@@ -1,4 +1,4 @@
-const { roll } = require('./roll');
+const { roll, createRollResponse } = require('./roll');
 
 const processCommand = message => {
   const fullCommand = message.content.substr(1);
@@ -9,10 +9,10 @@ const processCommand = message => {
 
   switch(primaryCommand) {
     case 'r':
-      roll(args, message);
+      message.channel.send(createRollResponse(roll(args, message.author.toString())));
       break;
     case 'roll':
-      roll(args, message);
+      message.channel.send(createRollResponse(roll(args, message.author.toString())));
       break;
     default:
       message.channel.send('I dont understand that command.');
