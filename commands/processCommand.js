@@ -9,11 +9,9 @@ const processCommand = message => {
 
   switch(primaryCommand) {
     case 'r':
-      message.channel.send(createRollResponse(roll(args, message.author.toString())));
-      break;
+      return createRollResponse(roll(args, message.author.toString()));
     case 'roll':
-      message.channel.send(createRollResponse(roll(args, message.author.toString())));
-      break;
+      return createRollResponse(roll(args, message.author.toString()));
     default:
       message.channel.send('I dont understand that command.');
   }

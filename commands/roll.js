@@ -72,13 +72,9 @@ const parseRollArgs = function(command) {
 
   tokens = tokens.trim().split(' ');
 
-  let modifier = null;
-
-  const tokenReducer = (acc, curr, idx) => {
+  const tokenReducer = (acc, curr) => {
     if (curr.match(/\d+d\d+/)) {
       acc.rollString = curr;
-    } else if (curr === '+') {
-      modifier = curr;
     } else if (curr.match(/^\d+$/)) {
       acc.modifier = Number(curr);
     } else if (curr.startsWith('-')) {
@@ -90,7 +86,7 @@ const parseRollArgs = function(command) {
   const tokensObject = tokens.reduce(tokenReducer, args);
 
   if (tokensObject.rollString) {
-    const [ _, numOfDie, dieSize ] = tokensObject.rollString.match(/(\d+)d(\d+)/);
+    const [ , numOfDie, dieSize ] = tokensObject.rollString.match(/(\d+)d(\d+)/);
     tokensObject.numOfDie = numOfDie;
     tokensObject.dieSize = dieSize;
   }
@@ -104,19 +100,17 @@ const singleRoll = function(dieSize) {
 
 const createRollResponse = function(data) {
   const { input, rolls, discarded, mod, sum, author, comment } = data;
-  let response = author + ': ' + '`' + input + '`';
-  if (comment) response += ' _' + comment + '_ => (';
-  else response += ' => (';
 
-  for (let i = 0; i < rolls.length; i++) {
-    response += rolls[i];
-    if (i < rolls.length - 1) response += '+';
+  let rollString = '';
+
+  for (let i = 0; i < rolls.length + discarded.length; i++) {
+    const allRolls = [ ...rolls, ...discarded ];
+    if (i < rolls.length) rollString += rolls[i];
+    else if (i >= rolls.length) rollString += `~~${discarded[i % rolls.length]}~~`;
+    if (i < allRolls.length - 1) rollString += '+';
   }
 
-  response += ')';
-  if (mod) response += ` + ${mod} = **${sum}**`;
-  else response += ` = **${sum}**`;
-
+  const response = `${author} : \`${input}\` ${comment? `_${comment}_ =>` :'=>'} ( ${rollString}) ${mod ? `+ ${mod} ` : ''} = **${sum}**`;
   return response;
 };
 

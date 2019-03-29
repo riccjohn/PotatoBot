@@ -22,7 +22,9 @@ client.on('message', receivedMessage => {
       receivedMessage.author !== client.user &&
       receivedMessage.content.startsWith('!')
     ) {
-      processCommand(receivedMessage);
+      const { channel, author } = receivedMessage;
+      const message = processCommand(receivedMessage);
+      sendMessage(message, channel, author);
     } else {
       return;
     }
@@ -30,6 +32,14 @@ client.on('message', receivedMessage => {
     logger.error('Found %s', error);
   }
 });
+
+const sendMessage = function(message, channel, author)  {
+  try {
+    channel.send(message, author);
+  } catch (error) {
+    logger.error(error);
+  }
+};
 
 client.on('error', error => {
   console.log('CLIENT ERROR ===>');
